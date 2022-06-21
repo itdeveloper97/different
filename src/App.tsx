@@ -1,23 +1,18 @@
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
+import { MenuMicroInteraction } from "./components/MenuMicroInteraction";
 
-function App() {
+export function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <MenuMicroInteraction />
+    </Container>
   );
 }
 
-export default App;
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
