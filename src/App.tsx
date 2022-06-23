@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { MenuMicroInteraction } from "./components/MenuMicroInteraction";
+import { Multiselect } from "./components/multiselect/Multiselect";
 
 export function App() {
   return (
     <Container>
-      <MenuMicroInteraction />
+      <Multiselect />
     </Container>
   );
 }
