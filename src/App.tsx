@@ -5,7 +5,11 @@ import { Multiselect } from "./components/multiselect/Multiselect";
 export function App() {
   return (
     <Container>
-      <Multiselect />
+      <Multiselect
+        select={{
+          isOpen: true,
+        }}
+      />
     </Container>
   );
 }

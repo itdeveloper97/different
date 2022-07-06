@@ -2,6 +2,7 @@ import React, {
   HTMLAttributes,
   memo,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -11,41 +12,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { hexToRGB } from "../../core/helpers/hexToRGB";
 import { useClickOutside } from "../../core/hooks/useClickOutside";
+import { MultiselectContext } from "./Multiselect";
 
-interface IProps extends HTMLAttributes<HTMLDivElement> {}
+interface IProps extends HTMLAttributes<HTMLDivElement> {
+  isOpen?: boolean;
+}
 
-export const Select: React.FC<IProps> = memo(({ children, ...rest }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
+export const Select: React.FC<IProps> = memo(
+  ({ isOpen = false, children, ...rest }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const { state, dispatch } = useContext(MultiselectContext);
+    const [open, setOpen] = useState(isOpen);
+    const [search, setSearch] = useState("");
 
-  useClickOutside(containerRef, () => setOpen(false));
+    useClickOutside(containerRef, () => setOpen(false));
 
-  const handleClick = useCallback(() => {
-    setOpen(!open);
-  }, [open]);
+    const handleClick = useCallback(() => {
+      setOpen(!open);
+    }, [open]);
 
-  useEffect(() => {
-    if (!inputRef.current) return;
-    open ? inputRef.current.focus() : inputRef.current.blur();
-  }, [open]);
+    useEffect(() => {
+      if (!inputRef.current) return;
+      open ? inputRef.current.focus() : inputRef.current.blur();
+    }, [open]);
 
-  return (
-    <Container {...rest} onClick={handleClick} ref={containerRef}>
-      <Input
-        type="text"
-        ref={inputRef}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <IconWrapper>
-        <Icon icon={faChevronDown} open={open} />
-      </IconWrapper>
-      <ChildrenWrapper>{open && children}</ChildrenWrapper>
-    </Container>
-  );
-});
+    console.log("state => ", state);
+    console.log("multiselect render");
+
+    return (
+      <Container {...rest} onClick={handleClick} ref={containerRef}>
+        <Input
+          type="text"
+          ref={inputRef}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconWrapper>
+          <Icon icon={faChevronDown} open={open} />
+        </IconWrapper>
+        <ChildrenWrapper>{open && children}</ChildrenWrapper>
+      </Container>
+    );
+  }
+);
 
 const Icon = styled(FontAwesomeIcon)<{ open: boolean }>`
   ${({ open }) =>
